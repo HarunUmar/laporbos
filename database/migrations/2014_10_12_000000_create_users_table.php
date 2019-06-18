@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('lat');
             $table->string('long');
             $table->enum('role', ['1','2','3']); // 1.SuperAdmin, 2.perangkat, 3.masyarakat
+            $table->string("img");
             $table->rememberToken();
             $table->timestamps();
         });
