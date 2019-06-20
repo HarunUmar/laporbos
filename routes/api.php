@@ -27,6 +27,6 @@ route::get("my_aduan/{id}","api\AduanController@myAduan");
 route::post("update_img","api\UserController@updateImage");
 
 Route::group(['middleware' => ['jwt.auth']], function() {
-	route::post('ubah_status_aduan','Api\AduanController@ubahStatus');
+	route::post('ubah_status_aduan','api\AduanController@ubahStatus');
 
 });
