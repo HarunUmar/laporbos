@@ -44,6 +44,7 @@ class UserController extends Controller
 
         $req['role'] = "3"; // default masyarakat
         $req['password']= bcrypt($req['password']);
+        $req['img'] = "-";
         $register = User::create($req);
         if($register){
     
@@ -178,15 +179,17 @@ class UserController extends Controller
           $msg = $validator->messages()->all();
       }else{
         $user = User::findOrFail($req['user_id']);
-        $fotoLama = $user['gambar'];
-        if(!empty($fotoLama)){
-            $hapusFoto = KompresFoto::HapusFoto($fotoLama,'user');
-        }
-        $upload = KompresFoto::UbahUkuran($req['gambar'],'user');
-        $update = $user->update(['gambar' => $upload]);
+        $file = $request->file('gambar');
+        $nama_file = time()."_".$file->getClientOriginalName();
+                // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'bukti';
+        $file->move($tujuan_upload,$nama_file);
+
+
+        $update = $user->update(['img' => $nama_file]);
         if($update){
           $success = 1;
-          $msg =  $upload;
+          $msg =  $nama_file;
         }else{
           $success = 0;
           $msg = "Gagal Update Gambar";
@@ -194,6 +197,8 @@ class UserController extends Controller
       }
       return response()->json(['success'=> $success,'msg'=>$msg]);
    }
+
+
 
    public function updateAlamat(Request $request)
    {

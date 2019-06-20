@@ -84,6 +84,36 @@ class AduanController extends Controller
     }
 
 
+    public function myAduan($id){
+
+
+        $query = Aduan::join('users as a','a.id','=','aduan.user_id')
+                        ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
+                        ->Join('masalah as c','c.id','=','aduan.masalah_id')
+                        ->join('users as e','e.id','=', 'c.user_id')
+                        ->select('a.name as pelapor' ,
+                                 'a.id as id_pelapor',
+                                 'b.url',
+                                 'aduan.id as id_aduan',
+                                 'judul',
+                                 'isi',
+                                 'aduan.lat',
+                                 'aduan.long',
+                                 'c.masalah',
+                                 'aduan.status',
+                                 'e.id as id_penerima',
+                                 'e.name'
+                             )
+                        ->where('a.id','=',$id)
+                        ->get();
+
+
+                         $success = 1;
+                         return response()->json(['success' => $success,'data' => $query], 200);
+
+    }
+
+
 
     public function ubahStatus(Request $request){
 

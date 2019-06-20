@@ -23,6 +23,9 @@ route::post('store_aduan','Api\AduanController@store')->name("storeAduan");
 route::post('register','Api\UserController@register')->name("register");
 route::post('login','Api\UserController@login')->name("login");
 route::get("detail_aduan/{id}",'Api\AduanController@detailAduan');
+route::get("my_aduan/{id}","api\AduanController@myAduan");
+route::post("update_img","api\UserController@updateImage");
+
 Route::group(['middleware' => ['jwt.auth']], function() {
 	route::post('ubah_status_aduan','Api\AduanController@ubahStatus');
 

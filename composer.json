@@ -17,7 +17,6 @@
         "tymon/jwt-auth": "0.5.*",
         "watson/rememberable": "^3.0",
         "lanin/laravel-api-debugger": "^3.0"
-
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
