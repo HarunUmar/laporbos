@@ -84,10 +84,11 @@ class AduanController extends Controller
     }
 
 
-    public function myAduan($id){
+    public function myAduan($id,$page,$dataPerpage){
 
 
-        $query = Aduan::join('users as a','a.id','=','aduan.user_id')
+        $offset = ($page - 1) * $dataPerpage;
+       $query = Aduan::join('users as a','a.id','=','aduan.user_id')
                         ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
@@ -104,12 +105,23 @@ class AduanController extends Controller
                                  'e.id as id_penerima',
                                  'e.name'
                              )
-                        ->where('a.id','=',$id)
+                        ->where('a.id',$id)
+                        ->orderBy('aduan.id','DESC')
+                        ->limit($dataPerpage)->offset($offset)
                         ->get();
 
+        $jumdat = Aduan::count();
 
-                         $success = 1;
-                         return response()->json(['success' => $success,'data' => $query], 200);
+         $jumHal = ceil($jumdat / $dataPerpage);
+         $pageSaatIni = (int) $page;
+         $pageSelanjutnya = $page+1;
+          if($pageSaatIni == $jumHal){
+             $tampilPS = 0;
+          }else{
+             $tampilPS = $pageSelanjutnya;
+          }
+          $success = 1;
+        return response()->json(['success' => $success,'pageSaatIni' => $pageSaatIni, 'pageSelanjutnya' => $tampilPS, 'data' => $query], 200);
 
     }
 

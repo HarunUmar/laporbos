@@ -18,12 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-route::get('list_aduan/{page}/{dataPerpage}','Api\AduanController@index')->name("listAduan");
-route::post('store_aduan','Api\AduanController@store')->name("storeAduan");
-route::post('register','Api\UserController@register')->name("register");
-route::post('login','Api\UserController@login')->name("login");
-route::get("detail_aduan/{id}",'Api\AduanController@detailAduan');
-route::get("my_aduan/{id}","api\AduanController@myAduan");
+route::get('list_aduan/{page}/{dataPerpage}','api\AduanController@index')->name("listAduan");
+route::post('store_aduan','api\AduanController@store')->name("storeAduan");
+route::post('register','api\UserController@register')->name("register");
+route::post('login','api\UserController@login')->name("login");
+route::get("detail_aduan/{id}",'api\AduanController@detailAduan');
+route::get("my_aduan/{id}/{page}/{dataPerpage}","api\AduanController@myAduan");
 route::post("update_img","api\UserController@updateImage");
 
 Route::group(['middleware' => ['jwt.auth']], function() {
