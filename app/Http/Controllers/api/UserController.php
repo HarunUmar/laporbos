@@ -44,6 +44,7 @@ class UserController extends Controller
 
         $req['role'] = "3"; // default masyarakat
         $req['password']= bcrypt($req['password']);
+	$req['img'] = "-";
         $register = User::create($req);
         if($register){
     
@@ -365,5 +366,6 @@ class UserController extends Controller
     }
 
 
+	
     
 }
