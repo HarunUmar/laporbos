@@ -18,8 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-route::get('list_aduan/{page}/{dataPerpage}','Api\AduanController@index')->name("listAduan");
-route::post('store_aduan','Api\AduanController@store')->name("storeAduan");
+route::get('list_aduan/{page}/{dataPerpage}','api\AduanController@index')->name("listAduan");
+route::post('store_aduan','api\AduanController@store')->name("storeAduan");
 route::post('register','Api\UserController@register')->name("register");
 route::post('login','Api\UserController@login')->name("login");
 route::get("detail_aduan/{id}",'Api\AduanController@detailAduan');
