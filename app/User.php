@@ -40,8 +40,11 @@ class User extends Authenticatable
 
      
 
-    public function rules()
-    {
-        return $this->belongsTo(Rules::class, 'rules_id','id');
-    }
+    // public function masalah()
+    // {
+    //     return $this->hasMany(Masalah::class, 'user_id','id');
+    // }
+
+
+
 }
