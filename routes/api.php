@@ -25,6 +25,9 @@ route::post('login','api\UserController@login')->name("login");
 route::get("detail_aduan/{id}",'api\AduanController@detailAduan');
 route::get("my_aduan/{id}/{page}/{dataPerpage}","api\AduanController@myAduan");
 route::post("update_img","api\UserController@updateImage");
+route::get('list_penerima/{page}/{dataPerpage}','api\UserController@listPenerima');
+route::post('tambah_love','api\AduanController@tambahLove');
+route::post('kurang_love','api\AduanController@kurangLove');
 
 Route::group(['middleware' => ['jwt.auth']], function() {
 	route::post('ubah_status_aduan','api\AduanController@ubahStatus');

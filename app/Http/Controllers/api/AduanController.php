@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use App\Aduan;
 use App\bukti;
+use App\Love;
 
 class AduanController extends Controller
 {
@@ -23,6 +24,7 @@ class AduanController extends Controller
                         ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
+                        ->join('love as d','d.aduan_id','=','aduan.id')
                         ->select('a.name as pelapor' ,
                                  'a.id as id_pelapor',
                                  'b.url',
@@ -31,10 +33,13 @@ class AduanController extends Controller
                                  'isi',
                                  'aduan.lat',
                                  'aduan.long',
+                                 'aduan.created_at',
                                  'c.masalah',
                                  'aduan.status',
                                  'e.id as id_penerima',
-                                 'e.name'
+                                 'e.name',
+                                 'd.love'
+
                              )
                         ->orderBy('aduan.id','DESC')
                         ->limit($dataPerpage)->offset($offset)
@@ -63,6 +68,7 @@ class AduanController extends Controller
                         ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
+                        ->join('love as d','d.aduan_id','=','aduan.id')
                         ->select('a.name as pelapor' ,
                                  'a.id as id_pelapor',
                                  'b.url',
@@ -72,9 +78,12 @@ class AduanController extends Controller
                                  'aduan.lat',
                                  'aduan.long',
                                  'c.masalah',
+                                 'c.jabatan',
                                  'aduan.status',
                                  'e.id as id_penerima',
-                                 'e.name'
+                                 'e.name',
+                                 'd.love',
+                                 'aduan.created_at'
                              )
                         ->where('aduan.id','=',$id)
                         ->get();
@@ -156,6 +165,26 @@ class AduanController extends Controller
 
 
 
+    public function tambahLove(Request $request){
+         $req = $request->all();
+        $query = Love::findOrFail($req['aduan_id']);
+
+        
+        Love::where('id',$req['aduan_id'])->update(['love' =>$query->love + 1]);
+
+    }
+
+    public function kurangLove(Request $request){
+         $req = $request->all();
+        $query = Love::findOrFail($req['aduan_id']);
+
+        
+        Love::where('id',$req['aduan_id'])->update(['love' => $query->love - 1]);
+    }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -208,7 +237,7 @@ class AduanController extends Controller
                     $insert = Aduan::create($req);
                      $file = $request->file('bukti');
  
-                 $nama_file = time()."_".$file->getClientOriginalName();
+                    $nama_file = time()."_".$file->getClientOriginalName();
  
                 // isi dengan nama folder tempat kemana file diupload
          $tujuan_upload = 'bukti';
@@ -218,6 +247,9 @@ class AduanController extends Controller
             'url' => $nama_file,
             'aduan_id' => $insert['id'],
         ]);
+        Love::create(['love' => 0,
+                      'aduan_id' => $insert['id'],]);
+
                     $success = 1;
                     $msg = "Berhasil Mengirim Laporan";
                     $kr = 200;

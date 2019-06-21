@@ -18,4 +18,10 @@ class Aduan extends Model
     	 return $this->belongsTo(User::class, 'user_id','id');
 
     }
+
+    public function getCreatedAtAttribute(){
+   		 return \Carbon\Carbon::parse($this->attributes['created_at'])->diffForHumans();
+	}
+
+
 }

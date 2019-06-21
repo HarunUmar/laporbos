@@ -373,5 +373,37 @@ class UserController extends Controller
 
 
 	
+
+    public function listPenerima($page, $dataPerpage)
+    {
+        
+       $offset = ($page - 1) * $dataPerpage;
+       $query = User::leftJoin('masalah as a','a.user_id','=','users.id')
+                        ->select('users.id',
+                          'users.name',
+                          'users.img',
+                          'a.jabatan')
+                        ->orderBy('users.id','DESC')
+                        ->where('users.role',2)
+                        ->limit($dataPerpage)->offset($offset)
+                        ->get();
+
+        $jumdat = User::count();
+
+         $jumHal = ceil($jumdat / $dataPerpage);
+         $pageSaatIni = (int) $page;
+         $pageSelanjutnya = $page+1;
+          if($pageSaatIni == $jumHal){
+             $tampilPS = 0;
+          }else{
+             $tampilPS = $pageSelanjutnya;
+          }
+          $success = 1;
+        return response()->json(['success' => $success,'pageSaatIni' => $pageSaatIni, 'pageSelanjutnya' => $tampilPS, 'data' => $query], 200);
+     
+    }
+
+
+
     
 }
