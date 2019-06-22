@@ -180,7 +180,7 @@ class AduanController extends Controller
 
     public function kurangLove(Request $request){
          $req = $request->all();
-        Love::where('user_id',$req['user_id'])->delete();
+        Love::where('user_id',$req['user_id'])->where('aduan_id',$req['aduan_id'])->delete();
     }
 
 
