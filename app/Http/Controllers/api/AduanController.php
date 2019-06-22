@@ -25,7 +25,7 @@ class AduanController extends Controller
                         ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
-                        ->join('love as d','d.aduan_id','=','aduan.id')
+                        ->leftjoin('love as d','d.aduan_id','=','aduan.id')
                         ->select('a.name as pelapor',
                                  'a.id as id_pelapor',
                                  'b.url',
