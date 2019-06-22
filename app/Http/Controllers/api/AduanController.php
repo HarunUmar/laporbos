@@ -8,6 +8,7 @@ use Validator;
 use App\Aduan;
 use App\bukti;
 use App\Love;
+use DB;
 
 class AduanController extends Controller
 {
@@ -16,7 +17,7 @@ class AduanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($page, $dataPerpage)
+    public function index($page, $dataPerpage,$user_id)
     {
         
        $offset = ($page - 1) * $dataPerpage;
@@ -25,7 +26,7 @@ class AduanController extends Controller
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
                         ->join('love as d','d.aduan_id','=','aduan.id')
-                        ->select('a.name as pelapor' ,
+                        ->select('a.name as pelapor',
                                  'a.id as id_pelapor',
                                  'b.url',
                                  'aduan.id as id_aduan',
@@ -38,9 +39,11 @@ class AduanController extends Controller
                                  'aduan.status',
                                  'e.id as id_penerima',
                                  'e.name',
-                                 'd.love'
+                                  DB::raw("count(d.id) as love"),
+                                  DB::raw("(SELECT id FROM `love`WHERE `user_id` = ".$user_id.") as `like`")
 
                              )
+                        ->groupBy('aduan.id')
                         ->orderBy('aduan.id','DESC')
                         ->limit($dataPerpage)->offset($offset)
                         ->get();
@@ -167,19 +170,17 @@ class AduanController extends Controller
 
     public function tambahLove(Request $request){
          $req = $request->all();
-        $query = Love::findOrFail($req['aduan_id']);
+     
 
+
+          Love::create($req);
         
-        Love::where('id',$req['aduan_id'])->update(['love' =>$query->love + 1]);
 
     }
 
     public function kurangLove(Request $request){
          $req = $request->all();
-        $query = Love::findOrFail($req['aduan_id']);
-
-        
-        Love::where('id',$req['aduan_id'])->update(['love' => $query->love - 1]);
+        Love::where('user_id',$req['user_id'])->delete();
     }
 
 
@@ -247,8 +248,6 @@ class AduanController extends Controller
             'url' => $nama_file,
             'aduan_id' => $insert['id'],
         ]);
-        Love::create(['love' => 0,
-                      'aduan_id' => $insert['id'],]);
 
                     $success = 1;
                     $msg = "Berhasil Mengirim Laporan";

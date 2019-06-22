@@ -9,5 +9,5 @@ class Love extends Model
     //
     
     protected $table = 'love';
-    protected $fillable = ['id','love','aduan_id'];
+    protected $fillable = ['id','user_id','aduan_id'];
 }

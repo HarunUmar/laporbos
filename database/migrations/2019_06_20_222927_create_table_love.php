@@ -15,7 +15,8 @@ class CreateTableLove extends Migration
     {
         Schema::create('love', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer("love");
+            $table->integer("user_id")->unsigned();
+            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
             $table->integer("aduan_id")->unsigned();
             $table->foreign("aduan_id")->references("id")->on("aduan")->onDelete("cascade")->onUpdate("cascade");
             $table->timestamps();
