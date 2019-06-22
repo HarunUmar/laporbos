@@ -39,6 +39,7 @@ class AduanController extends Controller
                                  'aduan.status',
                                  'e.id as id_penerima',
                                  'e.name',
+                                 'e.img',
                                   DB::raw("count(d.id) as love"),
                                   DB::raw("(SELECT id FROM `love`WHERE `user_id` = ".$user_id." AND `aduan_id` = aduan.id) as `like`")
 
@@ -85,6 +86,7 @@ class AduanController extends Controller
                                  'aduan.status',
                                  'e.id as id_penerima',
                                  'e.name',
+                                 'e.img',
                                   DB::raw("count(d.id) as love"),
                                   DB::raw("(SELECT id FROM `love`WHERE `user_id` = ".$user_id." AND `aduan_id` = ".$id.") as `like`")
 
