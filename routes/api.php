@@ -22,7 +22,7 @@ route::get('list_aduan/{page}/{dataPerpage}/{user_id}','api\AduanController@inde
 route::post('store_aduan','api\AduanController@store')->name("storeAduan");
 route::post('register','api\UserController@register')->name("register");
 route::post('login','api\UserController@login')->name("login");
-route::get("detail_aduan/{id}",'api\AduanController@detailAduan');
+route::get("detail_aduan/{id}/{user_id}",'api\AduanController@detailAduan');
 route::get("my_aduan/{id}/{page}/{dataPerpage}","api\AduanController@myAduan");
 route::post("update_img","api\UserController@updateImage");
 route::get('list_penerima/{page}/{dataPerpage}','api\UserController@listPenerima');

@@ -65,14 +65,14 @@ class AduanController extends Controller
 
 
 
-    public function detailAduan($id){
+    public function detailAduan($id,$user_id){
 
-         $query = Aduan::join('users as a','a.id','=','aduan.user_id')
+            $query = Aduan::join('users as a','a.id','=','aduan.user_id')
                         ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
                         ->Join('masalah as c','c.id','=','aduan.masalah_id')
                         ->join('users as e','e.id','=', 'c.user_id')
                         ->leftjoin('love as d','d.aduan_id','=','aduan.id')
-                        ->select('a.name as pelapor' ,
+                        ->select('a.name as pelapor',
                                  'a.id as id_pelapor',
                                  'b.url',
                                  'aduan.id as id_aduan',
@@ -80,14 +80,16 @@ class AduanController extends Controller
                                  'isi',
                                  'aduan.lat',
                                  'aduan.long',
+                                 'aduan.created_at',
                                  'c.masalah',
-                                 'c.jabatan',
                                  'aduan.status',
                                  'e.id as id_penerima',
                                  'e.name',
-                                 'd.love',
-                                 'aduan.created_at'
+                                  DB::raw("count(d.id) as love"),
+                                  DB::raw("(SELECT id FROM `love`WHERE `user_id` = ".$user_id." AND `aduan_id` = ".$id.") as `like`")
+
                              )
+                        ->groupBy('aduan.id')
                         ->where('aduan.id','=',$id)
                         ->get();
 
