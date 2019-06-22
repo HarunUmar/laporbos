@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-route::get('list_aduan/{page}/{dataPerpage}','api\AduanController@index')->name("listAduan");
+route::get('list_aduan/{page}/{dataPerpage}/{user_id}','api\AduanController@index')->name("listAduan");
 route::post('store_aduan','api\AduanController@store')->name("storeAduan");
 route::post('register','api\UserController@register')->name("register");
 route::post('login','api\UserController@login')->name("login");
