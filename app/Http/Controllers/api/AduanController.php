@@ -8,6 +8,7 @@ use Validator;
 use App\Aduan;
 use App\bukti;
 use App\Love;
+use App\Masalah;
 use DB;
 
 class AduanController extends Controller
@@ -307,6 +308,15 @@ class AduanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function daftarMasalah(){
+
+      $query = Masalah::select('id','masalah','jabatan')->get();
+
+      return response()->json(['success' => 1, 'msg' => $query], 200);
+
     }
 
 }
