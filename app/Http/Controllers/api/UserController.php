@@ -184,7 +184,7 @@ class UserController extends Controller
         $file = $request->file('gambar');
         $nama_file = time()."_".$file->getClientOriginalName();
                 // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'bukti';
+        $tujuan_upload = 'users';
         $file->move($tujuan_upload,$nama_file);
 
 
@@ -236,174 +236,17 @@ class UserController extends Controller
       return response()->json(['success'=> $success,'msg'=>$msg]);
    }
 
-   public function UpdateProfil(Request $request)
-   {
-      $req = $request->all();
-      $jumReq = count($req);
-      $array_field = ['name','email','no_hp','user_id','detail_alamat','lat','long'];
-      $array_field_rule = ['name' => 'required', 
-                           
-                           'email' => 'required|email|unique:users', 
-                           'no_hp' => 'required|unique:users',
-                           'user_id' => 'required',
-                           'detail_alamat' => 'required',
-                           'lat' => 'required',
-                           'long' => 'required',
+  
 
-                         ];
-      $array_field_messages = ['name' => ['name.required' => 'nama Tidak Bisa Kosong'],
-                             
-                               'email' => ['email.required' => 'email Tidak Bisa Kosong',
-                                           'email.email' => 'format Email example@mail.com',
-                                           'email.unique' => 'email Sudah Ada Yang Menggunakan'
-                                          ],
-                               'no_hp' => ['no_hp.required' => 'no_hp Tidak Bisa Kosong',
-                                           'no_hp.unique' => 'no_hp Sudah Ada Yang Menggunakan'
-                                          ],
-                               'user_id' => ['user_id.required' => 'user_id Tidak Bisa Kosong'],
-                               'detail_alamat' => ['detail_alamat.required'=> 'detail_alamat Tidak Bisa Kosong'],
-                               'lat' => ['lat.required'=> 'lat Tidak Bisa Kosong'],
-                               'long' => ['long.required'=> 'long Tidak Bisa Kosong'],
-                              ];
-
-      if(isset($req['user_id'])){
-        $rules = array();
-        $messsages = [];
-        $find = User::findOrFail($req['user_id']);
-        $temp = array();
-        if($jumReq == 2){
-            foreach ($req as $key => $value) {
-              if(in_array($key, $array_field)){
-                $rules[$key] =  $array_field_rule[$key];
-                
-                foreach ($array_field_messages[$key] as $key1 => $value1) {
-                  $messsages[$key1] = $value1;
-                }
-                if($key != 'user_id'){
-                  $temp[$key] = $value;
-                  $validator = Validator::make($request->all(), $rules,$messsages);
-                  if($validator->fails()){
-                      $success = 0;
-                      $msg = $validator->messages()->all();
-                  }else{
-                      // return $temp;
-                      $update = $find->update($temp);
-                      if($update){
-                        $success = 1;
-                        $msg = "Berhasil Update";
-                      }else{
-                        $success = 0;
-                        $msg = "Gagal Update";
-                      }
-                  } 
-                }
-               
-              }else{
-                $success = 0;
-                $msg = "Request ".$key." Tidak Ada Dalam Rule";
-              }
-            }
-        }else if($jumReq == 1){
-          $success = 0;
-          $msg = "Request Yang Diterima Minimal 2";
-        }else{
-           $success = 0;
-           $msg = "Request Telah Lebih Dari 2";
-        }
-        
-      }else{
-        $success = 0;
-        $msg = "Tidak ada user_id yang akan di update";
-      }
-      return response()->json(['success'=> $success,'msg'=>$msg]);
-        // return $messsages;
-   }
-
-    public function updateTokenGCM(Request $request)
+    public function showProfil($id)
     {
-        $input = $request->all();
-        $messsages = array( 'user_id.required'=>'user_id Harus Diisi','token.required'=>'Token Harus Diisi');  
-        $rules = array( 'user_id' => 'required','token' => 'required'); 
-
-        $validator = Validator::make($input, $rules,$messsages);
-
-        if ($validator->fails()) {
-            $success = 0;
-            $msg = $validator->messages()->all();
-        }else {
-            $cek_user = User::find($input['user_id']);
-            if($cek_user){
-                $cek_user->token_gcm = $input['token'];
-                $update = $cek_user->save();
-                if($update){
-                    $success = 1;
-                    $msg = "Berhasil Update Token";
-                }else{
-                    $success = 0;
-                    $msg = "Gagal Update Token";
-                }
-            }else{
-                $success = 0;  
-                $msg = "User Tidak Ditemukan";
-            }
-        }
-        return response()->json(['success' => $success, 'msg' => $msg]);
-    }
-
-    public function showProfil(Request $request)
-    {
-       $req = $request->all();
-       $messsages = ['user_id.required' => 'user_id Tidak Bisa Kosong'];
-       $rules = ['user_id' => 'required'];
-
-       $validator = Validator::make($req, $rules,$messsages);
-       if($validator->fails()){
-            $success = 0;
-            $msg = $validator->messages()->all();
-            $kr = 400;
-       }else{
-            
-            $select = User::findOrFail($req['user_id']);
+      
+            $select = User::findOrFail($id);
             $success = 1;
             $msg = $select;
             $kr = 200;
-       }
+      
        return response()->json(['success' => $success, 'msg' => $msg], $kr);
     }
-
-
-	
-
-    public function listPenerima($page, $dataPerpage)
-    {
-        
-       $offset = ($page - 1) * $dataPerpage;
-       $query = User::leftJoin('masalah as a','a.user_id','=','users.id')
-                        ->select('users.id',
-                          'users.name',
-                          'users.img',
-                          'a.jabatan')
-                        ->orderBy('users.id','DESC')
-                        ->where('users.role',2)
-                        ->limit($dataPerpage)->offset($offset)
-                        ->get();
-
-        $jumdat = User::count();
-
-         $jumHal = ceil($jumdat / $dataPerpage);
-         $pageSaatIni = (int) $page;
-         $pageSelanjutnya = $page+1;
-          if($pageSaatIni == $jumHal){
-             $tampilPS = 0;
-          }else{
-             $tampilPS = $pageSelanjutnya;
-          }
-          $success = 1;
-        return response()->json(['success' => $success,'pageSaatIni' => $pageSaatIni, 'pageSelanjutnya' => $tampilPS, 'data' => $query], 200);
-     
-    }
-
-
-
     
 }
