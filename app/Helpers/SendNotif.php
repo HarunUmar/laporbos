@@ -48,7 +48,7 @@ class SendNotif{
         $notification = $notificationBuilder->build();
 
         $topic = new Topics();
-        $topic->topic('kota'.$city_id);
+        $topic->topic('BOS_USER3');
 
         $topicResponse = FCM::sendToTopic($topic, null, $notification, null);
 
@@ -118,6 +118,7 @@ class SendNotif{
         $res['data']['message'] = $pesan;
         $res['data']['image'] = asset('bukti/'.$gambar);
         $res['data']['payload'] =  $payload;
+	$res['data']['id'] =  $id_user;
         $res['data']['timestamp'] = date('Y-m-d G:i:s');
         $topic = new Topics();
         $topic->topic('BOS_USER'.$id_user);

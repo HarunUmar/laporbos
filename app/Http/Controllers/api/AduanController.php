@@ -324,7 +324,8 @@ class AduanController extends Controller
 
     public function sendNotif(){
 
-        SendNotif::sendTopicWithUserId("Winda","wah","ini test loh","1561328684_IMG_20190624_062407.jpg","5");
+        $q = SendNotif::sendTopicWithUserId("Winda","wah","ini test loh","1561328684_IMG_20190624_062407.jpg","5");
+ 	
     }
 
 }
