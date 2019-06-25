@@ -118,7 +118,7 @@ class SendNotif{
         $res['data']['message'] = $pesan;
         $res['data']['image'] = asset('bukti/'.$gambar);
         $res['data']['payload'] =  $payload;
-	$res['data']['id'] =  $id_user;
+	    $res['data']['id'] =  $id_user;
         $res['data']['timestamp'] = date('Y-m-d G:i:s');
         $topic = new Topics();
         $topic->topic('global');
