@@ -120,7 +120,7 @@ class SendNotif{
         $res['data']['payload'] =  $payload;
         $res['data']['timestamp'] = date('Y-m-d G:i:s');
         $topic = new Topics();
-        $topic->topic('BOS_USER'.$id_user);
+        $topic->topic('global');
 
 
         $optionBuiler = new OptionsBuilder();
