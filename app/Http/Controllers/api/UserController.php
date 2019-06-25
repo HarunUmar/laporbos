@@ -46,16 +46,16 @@ class UserController extends Controller
         $req['password']= bcrypt($req['password']);
 
         $req['img'] = "-";
-
+       
         $register = User::create($req);
         if($register){
-    
+        $token = JWTAuth::attempt(['no_hp' => $request->no_hp, 'password' => $request->password]);
           $success = 1;
           // $token = JWTAuth::fromUser($register);
           $msg = User::findOrFail($register->id);
           $response = [
               "success" => $success,
-              "user_id" => $register['id'],
+              "token" => $token,
               // "key" => "Bearer {$token}",
               "msg" => $msg,
           ];
