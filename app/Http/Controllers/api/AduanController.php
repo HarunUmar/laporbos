@@ -10,6 +10,7 @@ use App\bukti;
 use App\Love;
 use App\Masalah;
 use DB;
+use App\Helpers\SendNotif;
 
 class AduanController extends Controller
 {
@@ -318,6 +319,12 @@ class AduanController extends Controller
 
       return response()->json(['success' => 1, 'msg' => $query], 200);
 
+    }
+
+
+    public function sendNotif(){
+
+        SendNotif::sendTopicWithUserId("Winda","wah","ini test loh","1561328684_IMG_20190624_062407.jpg","3");
     }
 
 }

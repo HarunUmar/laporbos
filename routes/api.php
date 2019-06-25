@@ -31,6 +31,8 @@ route::post('kurang_love','api\AduanController@kurangLove');
 route::get('list_masalah','api\AduanController@daftarMasalah');
 route::get('show_profil/{id}','api\UserController@showProfil');
 
+
+route::get('send_notif','api\AduanController@sendNotif');
 Route::group(['middleware' => ['jwt.auth']], function() {
 	route::post('ubah_status_aduan','api\AduanController@ubahStatus');
 
