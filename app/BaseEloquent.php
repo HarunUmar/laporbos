@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Watson\Rememberable\Rememberable;
 
-class BaseEloquent extends Model
+class BaseEloquent extends BaseEloquent 
 {
     use Rememberable;
 

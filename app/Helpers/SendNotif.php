@@ -5,6 +5,7 @@ use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 use LaravelFCM\Message\Topics;
 use FCM;
+use Ixudra\Curl\Facades\Curl;
 
 
 class SendNotif{
@@ -145,4 +146,13 @@ class SendNotif{
         $topicResponse->error();
     }
 
+public static function sendNotifWa($no_hp,$message)
+    {
+        $response = Curl::to('https://wablas.com//api/send-message')
+                        ->withData( array( 'phone' => $no_hp,'message' => $message) )
+                        ->withHeader('Authorization: xjMh25HC9f1Eu4MAielhWXDyYQ3xJIg3VOHYVEis0MUrmWcWSJsFvTCWnT0ZmFTv')
+                        ->asJson( true )
+                        ->post();
+        return $response;
+    }
 }
