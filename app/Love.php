@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Love extends Model
+class Love extends BaseEloquent
 {
     //
     

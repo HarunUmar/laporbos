@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Aduan'),
 
     /*
     |--------------------------------------------------------------------------
@@ -171,6 +171,7 @@ return [
          LaravelFCM\FCMServiceProvider::class,
          Barryvdh\Debugbar\ServiceProvider::class,
          Lanin\Laravel\ApiDebugger\ServiceProvider::class,
+         Ixudra\Curl\CurlServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -237,6 +238,7 @@ return [
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Debugger' => Lanin\Laravel\ApiDebugger\Facade::class,
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
 
     ],
 

@@ -11,6 +11,7 @@ use App\Love;
 use App\Masalah;
 use DB;
 use App\Helpers\SendNotif;
+use Illuminate\Support\Facades\Cache;
 
 class AduanController extends Controller
 {
@@ -178,17 +179,23 @@ class AduanController extends Controller
 
 
     public function tambahLove(Request $request){
-         $req = $request->all();
-     
+          $req = $request->all();
+          $query = Love::where('aduan_id',$req['aduan_id'])->where('user_id',$req['user_id'])->count();
 
-
-          Love::create($req);
+          if($query <= 0){
+              $req = $request->all();
+             Love::create($req);
+             $this->invalidateCache();
+          }
+         // return $query;
+         
         
 
     }
 
     public function kurangLove(Request $request){
          $req = $request->all();
+         $this->invalidateCache();
         Love::where('user_id',$req['user_id'])->where('aduan_id',$req['aduan_id'])->delete();
     }
 
@@ -326,6 +333,12 @@ class AduanController extends Controller
 
         $q = SendNotif::sendTopicWithUserId("Winda","wah","ini test loh","1561328684_IMG_20190624_062407.jpg","5");
  	
+    }
+
+     protected function invalidateCache()
+    {
+        // Cache::get('kapal')->flush();
+         Cache::tags('aduan')->flush();
     }
 
 }

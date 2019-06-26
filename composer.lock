@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8327387c0dd4a3c5e8ab48ff34a39f24",
+    "content-hash": "45da6ec5327742d5531b7ead3a4ac50f",
     "packages": [
         {
             "name": "brozot/laravel-fcm",
@@ -616,6 +616,59 @@
             "time": "2018-12-04T20:46:45+00:00"
         },
         {
+            "name": "ixudra/curl",
+            "version": "6.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ixudra/curl.git",
+                "reference": "1ab270e48082ee6e7f32fa72412c2c81eb974516"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ixudra/curl/zipball/1ab270e48082ee6e7f32fa72412c2c81eb974516",
+                "reference": "1ab270e48082ee6e7f32fa72412c2c81eb974516",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ixudra\\Curl\\CurlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Curl": "Ixudra\\Curl\\Facades\\Curl"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ixudra\\Curl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Oris",
+                    "email": "jan.oris@ixudra.be"
+                }
+            ],
+            "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
+            "homepage": "http://ixudra.be",
+            "keywords": [
+                "Ixudra",
+                "curl",
+                "laravel"
+            ],
+            "time": "2017-12-08T14:31:13+00:00"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "v0.2",
             "source": {
@@ -747,73 +800,6 @@
             ],
             "description": "Update helper",
             "time": "2019-06-05T08:34:23+00:00"
-        },
-        {
-            "name": "lanin/laravel-api-debugger",
-            "version": "3.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mlanin/laravel-api-debugger.git",
-                "reference": "d6f9a0a509c7ed011586f48be243d7b34012a919"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mlanin/laravel-api-debugger/zipball/d6f9a0a509c7ed011586f48be243d7b34012a919",
-                "reference": "d6f9a0a509c7ed011586f48be243d7b34012a919",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": ">=5.4.0",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "orchestra/testbench": ">=3.4.0",
-                "phpunit/phpunit": ">=5.7"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Lanin\\Laravel\\ApiDebugger\\ServiceProvider"
-                    ],
-                    "aliases": {
-                        "Debugger": "Lanin\\Laravel\\ApiDebugger\\Support\\Facade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Lanin\\Laravel\\ApiDebugger\\": "src/"
-                },
-                "files": [
-                    "src/Support/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Maxim Lanin",
-                    "email": "max@lanin.me",
-                    "homepage": "http://lanin.me"
-                }
-            ],
-            "description": "Easily debug your JSON API.",
-            "keywords": [
-                "api",
-                "debug",
-                "debugger",
-                "dump",
-                "framework",
-                "json",
-                "laravel",
-                "log",
-                "queries"
-            ],
-            "time": "2019-02-09T16:05:58+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3989,6 +3975,73 @@
                 "test"
             ],
             "time": "2016-01-20T08:20:44+00:00"
+        },
+        {
+            "name": "lanin/laravel-api-debugger",
+            "version": "3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mlanin/laravel-api-debugger.git",
+                "reference": "d6f9a0a509c7ed011586f48be243d7b34012a919"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mlanin/laravel-api-debugger/zipball/d6f9a0a509c7ed011586f48be243d7b34012a919",
+                "reference": "d6f9a0a509c7ed011586f48be243d7b34012a919",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.4.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": ">=3.4.0",
+                "phpunit/phpunit": ">=5.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lanin\\Laravel\\ApiDebugger\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Debugger": "Lanin\\Laravel\\ApiDebugger\\Support\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lanin\\Laravel\\ApiDebugger\\": "src/"
+                },
+                "files": [
+                    "src/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxim Lanin",
+                    "email": "max@lanin.me",
+                    "homepage": "http://lanin.me"
+                }
+            ],
+            "description": "Easily debug your JSON API.",
+            "keywords": [
+                "api",
+                "debug",
+                "debugger",
+                "dump",
+                "framework",
+                "json",
+                "laravel",
+                "log",
+                "queries"
+            ],
+            "time": "2019-02-09T16:05:58+00:00"
         },
         {
             "name": "maximebf/debugbar",
