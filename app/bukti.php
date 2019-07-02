@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class bukti extends  BaseEloquent 
+class bukti extends Model
 {
     //
 

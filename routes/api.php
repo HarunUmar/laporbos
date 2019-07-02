@@ -30,6 +30,8 @@ route::post('tambah_love','api\AduanController@tambahLove');
 route::post('kurang_love','api\AduanController@kurangLove');
 route::get('list_masalah','api\AduanController@daftarMasalah');
 route::get('show_profil/{id}','api\UserController@showProfil');
+route::post('terima_aduan','api\AduanController@aduanDiTerima');
+route::post('callback','api\AduanController@callBack');
 
 
 route::get('send_notif','api\AduanController@sendNotif');

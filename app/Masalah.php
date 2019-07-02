@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Masalah extends  BaseEloquent 
+class Masalah extends BaseEloquent
 {
     //
 

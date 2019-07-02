@@ -177,6 +177,48 @@ class AduanController extends Controller
     }
 
 
+    public function aduanDiTerima(Request $request){
+
+        $req = $request->all();
+    $query = Aduan::join('users as a','a.id','=','aduan.user_id')
+                        ->leftjoin('bukti as b','b.aduan_id','=','aduan.id')
+                        ->Join('masalah as c','c.id','=','aduan.masalah_id')
+                        ->join('users as e','e.id','=', 'c.user_id')
+                        ->select('a.name as pelapor' ,
+                                 'a.id as id_pelapor',
+                                 'b.url',
+                                 'aduan.id as id_aduan',
+                                 'judul',
+                                 'isi',
+                                 'aduan.lat',
+                                 'aduan.long',
+                                 'c.masalah',
+                                 'aduan.status',
+                                 'aduan.created_at',
+                                 'e.id as id_penerima',
+                                 'e.name',
+                                 'e.no_hp as hp'
+                             )
+                        ->where('aduan.id',$req['aduan_id'])
+                        ->orderBy('aduan.id','DESC')
+                        ->get();
+
+
+
+    $hp = $query[0]->hp;
+
+    $pesan = "Izin Bapak/Ibu ".$query[0]->name;
+    $pesan .= "\n Saudara ".$query[0]->pelapor. " Membuat pengaduan";
+    $pesan .= "\n Judul : ".$query[0]->judul;
+    $pesan .= "\n Pesan : ".$query[0]->isi;
+    $pesan .= "\n Lokasi : https://maps.google.com/maps?daddr=".$query[0]->lat.",".$query[0]->long;
+    $pesan .= "\n --------------------------------------------------";
+    $pesan .= "\n Mohon Tanggapannya dengan membalas angka 1 yang berarti anda telah meresponnya";
+    $q = SendNotif::sendNotifWa($hp,$pesan);
+    
+
+    }
+
 
     public function tambahLove(Request $request){
           $req = $request->all();
@@ -339,6 +381,16 @@ class AduanController extends Controller
     {
         // Cache::get('kapal')->flush();
          Cache::tags('aduan')->flush();
+    }
+
+
+    public function callBack(Request $request){
+
+
+        extract($request->all());
+        echo $message;
+
+
     }
 
 }
