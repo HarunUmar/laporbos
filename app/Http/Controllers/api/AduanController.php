@@ -387,9 +387,17 @@ class AduanController extends Controller
     public function callBack(Request $request){
 
 
-        extract($request->all());
-        echo $message;
-
+       // 3#ok = untuk selesai
+       // 3#siap = proses
+      
+       $req =  $request->post();
+       $pesan = strtoupper($req['message']);
+       $pecah = explode('#',$pesan);
+       $id = Aduan::FindOrFail($pecah[0]);
+       //if($pecah[0] < $id->status == ){
+//	} else if(
+      // $msg= Aduan::where('id',$pecah[1])->update(['status' => $req['status']]);
+      // return response($pecah[1], 200)->header('Content-Type', 'text/plain');
 
     }
 
