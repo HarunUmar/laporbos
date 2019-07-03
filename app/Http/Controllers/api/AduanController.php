@@ -10,6 +10,7 @@ use App\bukti;
 use App\Love;
 use App\Masalah;
 use DB;
+use App\User;
 use App\Helpers\SendNotif;
 use Illuminate\Support\Facades\Cache;
 
@@ -410,38 +411,53 @@ class AduanController extends Controller
        // 3#ok = untuk selesai
        // 3#siap = proses
 
-    try {
+
     
         $pesan = "";
         $req =  $request->post();
-        $pes = strtoupper($req['message']);
-        $pecah = explode('#',$pes);
-        $id_di_db = Aduan::FindOrFail($pecah[0]);
-        $nilai_next = $id_di_db->status + 1;
-   
-        if($id_di_db->status > $pecah[1]){
-             $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
-             
-        }
-        else if($id_di_db->status == $pecah[1] ){
-            $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+        $noHp = $req['phone'];
+        $user = User::where('no_hp',$noHp)->first();
+    
+        if(!empty($user)){
             
-        } 
-        else if($nilai_next != $pecah[1]){
-            $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+            $pes = strtoupper($req['message']);
+            $pecah = explode('#',$pes);
+            $id_di_db = Aduan::where('id',$pecah[0])->where('user_id',$user->id)->first();
+            if(!empty($id_di_db)){
+
+                $nilai_next = $id_di_db->status + 1;
+       
+            if($id_di_db->status > $pecah[1]){
+                 $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+                 
+            }
+            else if($id_di_db->status == $pecah[1] ){
+                $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+                
+            } 
+            else if($nilai_next != $pecah[1]){
+                $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+            }
+            else{
+             if($nilai_next == $pecah[1] and $pecah[1] <=3 ){
+                 $this->invalidateCache();
+                 Aduan::where('id',$id_di_db->id)->update(['status' => $pecah[1]]);
+                 $pesan = $this->responSukses($nilai_next,$id_di_db->id);
+                 }    
+             }
+            
+            } else{
+
+                $pesan = "anda tidak punya otoritasi untuk melakukan oprasi ini";
+            }
+            
+          
+            
+        }else{
+            $pesan = "anda tidak terdaftar";
         }
-        else{
-         if($nilai_next == $pecah[1] and $pecah[1] <=3 ){
-             Aduan::where('id',$id_di_db->id)->update(['status' => $pecah[1]]);
-             $pesan = $this->responSukses($nilai_next,$id_di_db->id);
-             }    
-         }
-         
-     
-       return response($pesan, 200)->header('Content-Type', 'text/plain');
-    } catch (\Throwable $th) {
-        //throw $th;
-    }
+    
+        return response($pesan, 200)->header('Content-Type', 'text/plain');
 
     }
 
