@@ -212,6 +212,7 @@ class AduanController extends Controller
     $pesan .= "\n Saudara ".$query[0]->pelapor. " Membuat pengaduan";
     $pesan .= "\n Judul : ".$query[0]->judul;
     $pesan .= "\n Pesan : ".$query[0]->isi;
+    $pesan .= "\n Pesan : http://suaratech.com/laporbos/bukti/".$query[0]->url;
     $pesan .= "\n Lokasi : https://maps.google.com/maps?daddr=".$query[0]->lat.",".$query[0]->long;
     $pesan .= "\n --------------------------------------------------";
     $pesan .= "\n Mohon Tanggapannya dengan membalas angka 1 yang berarti anda telah meresponnya";
@@ -415,8 +416,9 @@ class AduanController extends Controller
     
         $pesan = "";
         $req =  $request->post();
-        $noHp = $req['phone'];
+        $noHp = str_replace("+62","0",$req['phone']);
         $user = User::where('no_hp',$noHp)->first();
+        echo $noHp;
     
         if(!empty($user)){
             
