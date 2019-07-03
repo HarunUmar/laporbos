@@ -429,7 +429,7 @@ class AduanController extends Controller
             $pes = strtoupper($req['message']);
             $pecah = explode('#',$pes);
             $id_di_db = Aduan::leftjoin('masalah as a','a.id','=','aduan.masalah_id')->where('a.user_id',$user->id)->first();
-            return $id_di_db;
+        
             if(!empty($id_di_db)){
 
                 $nilai_next = $id_di_db->status + 1;
