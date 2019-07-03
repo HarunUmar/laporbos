@@ -463,10 +463,9 @@ class AduanController extends Controller
             $pesan = "anda tidak terdaftar";
         }
     
-        return response($pesan, 200)->header('Content-Type', 'text/plain');
-        }
         
-
+        }
+        return response($pesan, 200)->header('Content-Type', 'text/plain');
     }
 
 }
