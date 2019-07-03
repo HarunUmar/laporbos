@@ -384,20 +384,64 @@ class AduanController extends Controller
     }
 
 
+    public function responGagal($kodeId, $id_aduan){
+        if($kodeId == 2){
+            return "anda harus melakukan konfirmasi aduan, dengan cara membalas chat ini, ".$id_aduan."#2";
+        } else if($kodeId == 3){
+            return "Silahkan Selesaikan Aduan ini dengan cara membalas chat ini, ".$id_aduan."#3";
+        }else{
+            return "Terima kasih telah menyelesaikan aduan ini ";
+        }
+       
+    }
+
+    public function responSukses($kodeId, $id_aduan){
+        if($kodeId == 2){
+            return "terima kasih telah melakukan konfirmasi aduan ini , jika aduan ini telah selesai, silahkan membalas chat ini dengan , ".$id_aduan."#3";
+        } else if($kodeId == 3){
+            return "terima kasih aduan ini telah selesai, sukses selalu untuk anda ";
+        }
+       
+    }
+
     public function callBack(Request $request){
 
 
        // 3#ok = untuk selesai
        // 3#siap = proses
-      
-       $req =  $request->post();
-       $pesan = strtoupper($req['message']);
-       $pecah = explode('#',$pesan);
-       $id = Aduan::FindOrFail($pecah[0]);
-       //if($pecah[0] < $id->status == ){
-//	} else if(
-      // $msg= Aduan::where('id',$pecah[1])->update(['status' => $req['status']]);
-      // return response($pecah[1], 200)->header('Content-Type', 'text/plain');
+
+    try {
+    
+        $pesan = "";
+        $req =  $request->post();
+        $pes = strtoupper($req['message']);
+        $pecah = explode('#',$pes);
+        $id_di_db = Aduan::FindOrFail($pecah[0]);
+        $nilai_next = $id_di_db->status + 1;
+   
+        if($id_di_db->status > $pecah[1]){
+             $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+             
+        }
+        else if($id_di_db->status == $pecah[1] ){
+            $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+            
+        } 
+        else if($nilai_next != $pecah[1]){
+            $pesan =  $this->responGagal($nilai_next,$id_di_db->id);
+        }
+        else{
+         if($nilai_next == $pecah[1] and $pecah[1] <=3 ){
+             Aduan::where('id',$id_di_db->id)->update(['status' => $pecah[1]]);
+             $pesan = $this->responSukses($nilai_next,$id_di_db->id);
+             }    
+         }
+         
+     
+       return response($pesan, 200)->header('Content-Type', 'text/plain');
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
 
     }
 
