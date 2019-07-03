@@ -416,9 +416,13 @@ class AduanController extends Controller
     
         $pesan = "";
         $req =  $request->post();
-        $noHp = str_replace("+62","0",$req['phone']);
+
+
+        if(strpos($req['message'],"#")) {
+
+        $noHp = str_replace("62","0",$req['phone']);
         $user = User::where('no_hp',$noHp)->first();
-        echo $noHp;
+        
     
         if(!empty($user)){
             
@@ -460,6 +464,8 @@ class AduanController extends Controller
         }
     
         return response($pesan, 200)->header('Content-Type', 'text/plain');
+        }
+        
 
     }
 
