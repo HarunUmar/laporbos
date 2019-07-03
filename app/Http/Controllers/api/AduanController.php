@@ -202,20 +202,20 @@ class AduanController extends Controller
                              )
                         ->where('aduan.id',$req['aduan_id'])
                         ->orderBy('aduan.id','DESC')
-                        ->get();
+                        ->first();
 
 
 
-    $hp = $query[0]->hp;
+    $hp = $query->hp;
 
-    $pesan = "Izin Bapak/Ibu ".$query[0]->name;
-    $pesan .= "\n Saudara ".$query[0]->pelapor. " Membuat pengaduan";
-    $pesan .= "\n Judul : ".$query[0]->judul;
-    $pesan .= "\n Pesan : ".$query[0]->isi;
-    $pesan .= "\n Pesan : http://suaratech.com/laporbos/bukti/".$query[0]->url;
-    $pesan .= "\n Lokasi : https://maps.google.com/maps?daddr=".$query[0]->lat.",".$query[0]->long;
-    $pesan .= "\n --------------------------------------------------";
-    $pesan .= "\n Mohon Tanggapannya dengan membalas angka 1 yang berarti anda telah meresponnya";
+    $pesan = "Izin Bapak/Ibu ".$query->name;
+    $pesan .= "\n Saudara ".$query->pelapor. " Membuat pengaduan";
+    $pesan .= "\n Judul : ".$query->judul;
+    $pesan .= "\n Pesan : ".$query->isi;
+    $pesan .= "\n Gambar : http://suaratech.com/laporbos/bukti/".$query->url;
+    $pesan .= "\n Lokasi : https://maps.google.com/maps?daddr=".$query->lat.",".$query->long;
+    $pesan .= "\n -----------------------------------a---------------";
+    $pesan .= "\n Mohon Tanggapannya dengan membalas ".$req['aduan_id']."#2 yang berarti anda telah meresponnya";
     $q = SendNotif::sendNotifWa($hp,$pesan);
     
 
