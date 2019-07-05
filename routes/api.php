@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::group(['middleware' => ['jwt.auth']], function() {
 route::get('list_aduan/{page}/{dataPerpage}/{user_id}','api\AduanController@index')->name("listAduan");
 route::post('store_aduan','api\AduanController@store')->name("storeAduan");
 route::post('register','api\UserController@register')->name("register");
@@ -32,10 +32,7 @@ route::get('list_masalah','api\AduanController@daftarMasalah');
 route::get('show_profil/{id}','api\UserController@showProfil');
 route::post('terima_aduan','api\AduanController@aduanDiTerima');
 route::post('callback','api\AduanController@callBack');
-
-
 route::get('send_notif','api\AduanController@sendNotif');
-Route::group(['middleware' => ['jwt.auth']], function() {
-	route::post('ubah_status_aduan','api\AduanController@ubahStatus');
+route::post('ubah_status_aduan','api\AduanController@ubahStatus');
 
 });
