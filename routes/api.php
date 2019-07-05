@@ -17,11 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+route::post('register','api\UserController@register')->name("register");
+route::post('login','api\UserController@login')->name("login");
 Route::group(['middleware' => ['jwt.auth']], function() {
 route::get('list_aduan/{page}/{dataPerpage}/{user_id}','api\AduanController@index')->name("listAduan");
 route::post('store_aduan','api\AduanController@store')->name("storeAduan");
-route::post('register','api\UserController@register')->name("register");
-route::post('login','api\UserController@login')->name("login");
+
 route::get("detail_aduan/{id}/{user_id}",'api\AduanController@detailAduan');
 route::get("my_aduan/{id}/{page}/{dataPerpage}","api\AduanController@myAduan");
 route::post("update_img","api\UserController@updateImage");
